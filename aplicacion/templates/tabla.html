@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipos</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>Equipo_1</th>
+            <th>Equipo_2</th>
+            <th>goles</th>
+            <th>goles</th>
+            <th>Puntos</th>
+        </tr>
+        <tr>
+            <td>PSG</td>
+            <td>BAYER</td>
+            <td> <input type="number" id="g1" oninput="calc()"></td>
+            <td> <input type="number" id="g2" oninput="calc()"></td>
+            <td id="res">-</td>
+        </tr>
+    </table>
+    <script>
+        function calc() {
+            let g1 = parseInt(document.getElementById("g1").value)
+            let g2 = parseFloat(document.getElementById("g2").value)
+            let res = document.getElementById("res");
+
+            if (g1 > g2) {
+                res.innerText = "3 - 0";
+            }
+            else if (g2 > g1) {
+                res.innerText = "0 - 3"
+            }
+            else {
+                res.innerText = " 1 - 1"
+            }
+        }
+    </script>
+</body>
+</html>
