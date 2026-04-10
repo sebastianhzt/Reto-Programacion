@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Equipo(models.Model):
     nombre = models.CharField(max_length=100, unique=True)
     puntos = models.IntegerField(default=0)
@@ -16,6 +17,7 @@ class Equipo(models.Model):
     @property
     def diferencia_goles(self):
         return self.goles_a_favor - self.goles_en_contra
+
 
 class Partido(models.Model):
     equipo_local = models.ForeignKey(Equipo, related_name='partidos_local', on_delete=models.CASCADE)
