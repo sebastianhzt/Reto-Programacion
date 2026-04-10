@@ -1,78 +1,39 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Torneo de Fútbol</title>
+    <title>Gestion de Torneo de Futbol</title>
     <style>
-        body { font-family: Arial,sans-serif;
-            margin: 20px;
-            background-color: #f4f4f9;
-        }
-        .container { max-width: 1000px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        header { display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        h1, h2 { color: #333;
-        }
-        table { width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-        }
-        th, td { padding: 12px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-        }
-        th { background-color: #007bff;
-            color: white;
-        
-        }
-        tr:hover { background-color: #f1f1f1;
-        }
-        .btn { padding: 8px 15px;
-            text-decoration: none;
-            border-radius: 4px;
-            cursor: pointer;
-            border: none; }
-        .btn-logout { background-color: #dc3545;
-            color: white; }
-        .btn-save { background-color: #28a745;
-            color: white; }
-        .btn-reset { background-color: #ffc107;
-            color: black; }
-        .score-input { width: 50px;
-            padding: 5px;
-            text-align: center;
-        }
-        .winner { font-weight: bold;
-            color: #28a745;
-        }
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f9; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
+        h1, h2 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        th, td { padding: 12px; text-align: center; border-bottom: 1px solid #ddd; }
+        th { background-color: #007bff; color: white; }
+        tr:hover { background-color: #f1f1f1; }
+        .btn { padding: 8px 15px; text-decoration: none; border-radius: 4px; cursor: pointer; border: none; }
+        .btn-logout { background-color: #dc3545; color: white; }
+        .btn-save { background-color: #28a745; color: white; }
+        .btn-reset { background-color: #ffc107; color: black; }
+        .score-input { width: 50px; padding: 5px; text-align: center; }
+        .winner { font-weight: bold; color: #28a745; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Gestión de Torneo: ¡Que ganen los mejores!</h1>
+            <h1>Gestion de Torneo: Que ganen los mejores!</h1>
             <div>
-                <span>Bienvenido, <strong>{{ user.username }}</strong></span> | 
-                <a href="{% url 'logout' %}" class="btn btn-logout">Cerrar Sesión</a>
+                <span>Bienvenido, <strong>{{ usuario }}</strong></span> |
+                <a href="{% url 'logout' %}" class="btn btn-logout">Cerrar Sesion</a>
             </div>
         </header>
 
-        {% if equipos.0.partidos_jugados > 0 %}
+        {% if finalista %}
         <section style="background-color: #d4edda; border: 2px solid #c3e6cb; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
-            <h2 style="color: #155724; margin-top: 0;">🏆 Equipo Finalista: {{ equipos.0.nombre }} 🏆</h2>
-            <p>Con un total de <strong>{{ equipos.0.puntos }}</strong> puntos.</p>
+            <h2 style="color: #155724; margin-top: 0;">Equipo Finalista: {{ finalista.nombre }}</h2>
+            <p>Va liderando con <strong>{{ finalista.puntos }}</strong> puntos.</p>
         </section>
         {% endif %}
 
@@ -82,14 +43,11 @@
                 <thead>
                     <tr>
                         <th>Pos</th>
-                        <th>E</th>
+                        <th>Equipo</th>
                         <th>PJ</th>
-                        <th>V</th>
+                        <th>G</th>
                         <th>E</th>
-                        <th>D</th>
-                        <th>GF</th>
-                        <th>GC</th>
-                        <th>DG</th>
+                        <th>P</th>
                         <th>Pts</th>
                     </tr>
                 </thead>
@@ -102,10 +60,11 @@
                         <td>{{ equipo.victorias }}</td>
                         <td>{{ equipo.empates }}</td>
                         <td>{{ equipo.derrotas }}</td>
-                        <td>{{ equipo.goles_a_favor }}</td>
-                        <td>{{ equipo.goles_en_contra }}</td>
-                        <td>{{ equipo.diferencia_goles }}</td>
                         <td><strong>{{ equipo.puntos }}</strong></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7">Aun no hay equipos cargados.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -122,7 +81,7 @@
                         <th>vs</th>
                         <th>Goles V</th>
                         <th>Visitante</th>
-                        <th>Acción</th>
+                        <th>Accion</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -156,13 +115,17 @@
                             </td>
                         </form>
                     </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">Aun no hay partidos registrados.</td>
+                    </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </section>
 
         <div style="text-align: center; margin-top: 20px;">
-            <a href="{% url 'reiniciar_torneo' %}" class="btn btn-reset" onclick="return confirm('¿Estás seguro de reiniciar el torneo?')">Reiniciar Torneo</a>
+            <a href="{% url 'reiniciar_torneo' %}" class="btn btn-reset" onclick="return confirm('Estas seguro de reiniciar el torneo?')">Reiniciar Torneo</a>
         </div>
     </div>
 </body>
